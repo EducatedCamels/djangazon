@@ -4,6 +4,7 @@ from website.views.product_details_view import *
 from website.views.category_list_view import *
 from website.views.single_category import *
 from website.views.shopping_cart_view import *
+from website.views.user_profile import *
 
 app_name = "website"
 urlpatterns = [
@@ -20,4 +21,5 @@ urlpatterns = [
     url(r'^paymentlist$', all_payment_types, name='paymentlist'),
     url(r'^single_category/(?P<category_id>.+?)/$', single_category, name='single_category'),
     url(r'^shopping_cart$', shopping_cart, name='shopping_cart'),
+    url(r'^user_profile$', user_profile, name='user_profile'),
 ]

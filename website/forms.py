@@ -26,3 +26,9 @@ class AddToCartForm(forms.ModelForm):
     class Meta:
         model = LineItem
         fields = ('order', 'product',)
+
+class UserProfileForm(forms.ModelForm):
+
+    class Meta:
+        model = User
+        fields = ('first_name', 'last_name')

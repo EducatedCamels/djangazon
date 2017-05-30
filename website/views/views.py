@@ -157,5 +157,3 @@ def all_payment_types(request):
         template_name = 'list_payment.html'
         payment_type_dict = {'all_payment_types': all_payment_types}
         return render(request, template_name, payment_type_dict)
-
- 
