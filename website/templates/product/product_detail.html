@@ -4,6 +4,8 @@
 	<h4>Product Description: {{product.description}}</h4>
 	<h4>Product Quantity: {{product.quantity}}</h4>
 	<h4>Product Price: {{product.price}}</h4>
+	<h4>Product Location: {{product.city}}</h4>
+
 	{% if user.is_authenticated %}
 
 	<form action="{% url 'website:add_to_cart' %}" method="POST">
