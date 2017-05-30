@@ -1,34 +1,66 @@
-# Welcome to Bangazon
+# Bangazon E-Commerce Web Site
 
-This web application is the source code for the Bangazon e-commerce web site. It is powered by Python and Django.
+## About This Project
+Bangazon is an e-commerce web site that allows users to post products to sell and to purchase products created by other users. Think about it as a combination of Amazon and Craigslist. 
 
-Students, you are inheriting a basic implementation that provides the following features:
+This project is powered by Python and Django. 
 
-1. User registration 
-1. User login 
-1. User logout 
-1. Adding a product 
-1. Listing products
 
-Please consult the backlog of issues and work with your product owner to implement the top priority tickets for your sprints.
+## Getting Started
 
-## To begin work
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 
-1. Fork this repository into your team's Github organization.
-1. Alert your manager when this is complete and all backlog issues will be imported into your fork.
-1. Each teammate should clone the repository.
-1. In the `djangazon` directory that gets created, run the migrations with `python manage.py migrate`
+### Prerequisites/Dependencies
+Install [pip](https://packaging.python.org/installing/)
 
-## Helpful Resources
+Install [Python 3.6](https://www.python.org/downloads/)
 
-### Django Models and Migrations
+Install Django and REST framework:
+```
+pip install django
+```
 
-Using the requirements above create a [model](https://docs.djangoproject.com/en/1.10/topics/db/models/) for each resource, and use [migrations](https://docs.djangoproject.com/en/1.10/topics/migrations/) to ensure your database structure is up to date.
+### Installing
+Clone repo:
 
-### Templates
+```
+cd 'name of directory where you will clone project'
+git clone https://github.com/EducatedCamels/djangazon.git
+cd djangazon
+```
+Setting up the database:
+```
+./damnit_django.sh 
+```
+Run project in browser:
 
-[Django template language](https://docs.djangoproject.com/en/1.10/ref/templates/language/)
+```
+python manage.py runserver
+```
 
-### Form Helpers
+## Running the tests
+```
+python manage.py test
+```
+5 tests will run. All tests should pass.
 
-Django, like Angular, has many built-in [helper tags and filters](https://docs.djangoproject.com/en/1.10/ref/templates/builtins/) when building the site templates. We strongly recommend reading this documentation while building your templates.
+## Deployment
+No additional resources required.
+## Built With
+
+* [Python](http://www.dropwizard.io/1.0.2/docs/) - Main Language
+* [Django](http://www.dropwizard.io/1.0.2/docs/) - The framework used
+* [pip](https://maven.apache.org/) - Dependency Management
+
+
+## Authors
+
+* **Dean "Cool Bean Salad" Smith** - [Deanomatic](https://github.com/Deanomatic)
+* **Bri Wyatt** - [briwyatt](https://github.com/briwyatt)
+* **Helana Nosrat** - [helanan](https://github.com/helanan)
+* **Kayla Brewer** - [kayrahbear](https://github.com/kayrahbear)
+* **James Tonkin** - [jamestonkin](https://github.com/jamestonkin)
+
+---
+#### Acknowledgments
+Thanks to [Steve Brownlee](https://github.com/stevebrownlee) and [Meg Ducharme](https://github.com/megducharme) for mentoring and encouraging us every step of the way!
