@@ -119,6 +119,7 @@ def sell_product(request):
                 price = form_data['price'],
                 quantity = form_data['quantity'],
                 is_local = boolean,
+                city = form_data['city'],
                 date = 'date',
                 category = c,
             )
@@ -129,8 +130,8 @@ def sell_product(request):
                 product = post_product(True)
                 template_name = 'product/product_detail.html'
                 return render(request, template_name, {'product': form_data})
-                
-        except MultiValueDictKeyError:
+
+        except:
             product = post_product(False)
             template_name = 'product/product_detail.html'
             return render(request, template_name, {'product': form_data})
