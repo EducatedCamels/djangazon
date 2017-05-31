@@ -108,19 +108,33 @@ def sell_product(request):
 
     elif request.method == 'POST':
         form_data = request.POST
-        c = Category.objects.get(pk=form_data['category'])
-        p = Product(
-            seller = request.user,
-            title = form_data['title'],
-            description = form_data['description'],
-            price = form_data['price'],
-            quantity = form_data['quantity'],
-            date = 'date',
-            category = c,
-        )
-        p.save()
-        template_name = 'product/product_detail.html'
-        return render(request, template_name, {'product': form_data})
+        print(form_data)
+
+        def post_product(boolean):
+            c = Category.objects.get(pk=form_data['category'])
+            p = Product(
+                seller = request.user,
+                title = form_data['title'],
+                description = form_data['description'],
+                price = form_data['price'],
+                quantity = form_data['quantity'],
+                is_local = boolean,
+                city = form_data['city'],
+                date = 'date',
+                category = c,
+            )
+            p.save()
+            return p
+        try:
+            if form_data['is_local']:
+                product = post_product(True)
+                template_name = 'product/product_detail.html'
+                return render(request, template_name, {'product': form_data})
+
+        except KeyError:
+            product = post_product(False)
+            template_name = 'product/product_detail.html'
+            return render(request, template_name, {'product': form_data})
 
 def list_products(request):
     all_products = Product.objects.all()
