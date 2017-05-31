@@ -131,7 +131,7 @@ def sell_product(request):
                 template_name = 'product/product_detail.html'
                 return render(request, template_name, {'product': form_data})
 
-        except:
+        except KeyError:
             product = post_product(False)
             template_name = 'product/product_detail.html'
             return render(request, template_name, {'product': form_data})
