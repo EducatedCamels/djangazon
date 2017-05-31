@@ -1,0 +1,25 @@
+{% extends "index.html" %}
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Your Search Results:</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+        {% if all_products %}
+            <ul>
+                {% for product in all_products %}
+                <li id="{{ product.id }}">
+                    <a href="{% url 'website:product_detail' product.id %}">{{ product.title }}</a>
+                </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="bg-danger">Sorry, no products matched your search. Try again!</p>
+        {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
