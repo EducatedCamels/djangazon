@@ -4,6 +4,7 @@ from website.views.product_details_view import *
 from website.views.category_list_view import *
 from website.views.single_category import *
 from website.views.shopping_cart_view import *
+from website.views.select_payment import *
 
 app_name = "website"
 urlpatterns = [

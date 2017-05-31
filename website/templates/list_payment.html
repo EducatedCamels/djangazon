@@ -2,10 +2,19 @@
 {% block content %}
     <h1>My Payments</h1>
 
+    <select>
     {% for payment_type in all_payment_types %}
-        <ul>
-        <li id="{{payment_type.id}}">{{ payment_type.name }} - {{payment_type.account_number}}</li>
-        </ul>
+        <option id="{{payment_type.id}}" name="{{payment_type.id}}" value="{{payment_type.id}}">{{ payment_type.name }} - {{payment_type.account_number}}</option>
     {% endfor %}
+    </select>
+    <input name="order_id" type="hidden" value="{{ order_id }}"/>
+    {% if not all_payment_types %}
+        <form action="{% url 'website:paymenttype' %}">
+            <input type="submit" value="Add Payment Type" />
+        </form>
+    {% else %}
+    <form action="{% url 'website:categories' %}" method="post">
+        <input type="submit" value="Complete Order"/>
+    </form>
+    {% endif %}
 {% endblock %}
-

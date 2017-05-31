@@ -3,7 +3,19 @@
     <h1>My Cart</h1>
     {% for product in products_on_order %}
     <ul>
-    <li id="{{product.id}}">{{product.product.title}} - ${{product.product.price}}</li>
+    <li id="{{product.id}}"><a href="{% url 'website:product_detail' product.id %}">{{product.product.title}} - ${{product.product.price}}</a></li>
     </ul>
     {% endfor %}
+    {% if not products_on_order%}
+
+      <form action="{% url 'website:index' %}">
+        <input type="submit" value="Please Add Products" />
+      </form>
+
+    {% else %}
+    <p><strong>Order Total: ${{ total }} </strong></p>
+    <form action="{% url 'website:paymentlist' %}">
+      <input type="submit" value="Checkout" />
+    </form>
+    {% endif %}
 {% endblock %}
