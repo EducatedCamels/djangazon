@@ -166,4 +166,4 @@ def add_payment_type(request):
             account_number=form_data['account_number'],
         )
         p.save()
-        return HttpResponseRedirect('/categories')
+        return HttpResponseRedirect('/user_payment_options')
