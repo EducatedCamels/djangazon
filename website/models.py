@@ -2,7 +2,10 @@ from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator
 from django.db import models
 
-
+options = (
+        (0, 'False'),
+        (1, 'True'),
+)
 # Create your models here.
 class Category(models.Model):
     """
@@ -59,7 +62,7 @@ class Product(models.Model):
     # Come back to the price field, in order to not allow negative numbers
     price = models.DecimalField(max_digits = 19, decimal_places = 2, validators = [MinValueValidator('0.0')])
     description = models.TextField(blank = True, null = True)
-    quantity = models.PositiveIntegerField() 
+    quantity = models.PositiveIntegerField()
     is_local = models.BooleanField(default=False)
     city = models.CharField(max_length = 255, blank = True, null = True)
     date = models.DateTimeField(auto_now_add=True, blank=True)
@@ -71,12 +74,10 @@ class PaymentType(models.Model):
     args: models.Model
     returns: N/A
     """
-    user = models.ForeignKey(
-        User,
-        on_delete = models.CASCADE,
-    )
+    user = models.ForeignKey(User)
     name = models.CharField(max_length = 255)
     account_number = models.IntegerField()
+    enabled = models.IntegerField(default=1, choices=options)
 
 class Order(models.Model):
     """
@@ -91,7 +92,6 @@ class Order(models.Model):
     )
     payment_type = models.ForeignKey(
         PaymentType,
-        on_delete = models.CASCADE,
         null = True,
         blank = True
     )

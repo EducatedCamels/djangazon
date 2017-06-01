@@ -6,6 +6,8 @@ from website.views.single_category import *
 from website.views.shopping_cart_view import *
 from website.views.complete_order import *
 from website.views.product_search_view import product_search
+from website.views.user_payment_options_view import delete_payment
+
 
 app_name = "website"
 urlpatterns = [
@@ -24,5 +26,6 @@ urlpatterns = [
     url(r'^single_category/(?P<category_id>.+?)/$', single_category, name='single_category'),
     url(r'^shopping_cart$', shopping_cart, name='shopping_cart'),
     url(r'^product_search$', product_search, name='product_search'),
+    url(r'^user_payment_options$', delete_payment, name='user_payment_options'),
 
 ]
