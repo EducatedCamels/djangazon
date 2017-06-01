@@ -18,7 +18,7 @@ def shopping_cart(request):
     the request with that rendered text.
     """
     if request.method == "GET":
-        user_order = Order.objects.get_or_create(payment_type_id = None, user_id = request.user)
+        user_order = Order.objects.get_or_create(payment_type_id = None, user_id = request.user.id)
         template_name = 'shopping_cart.html'
 
         products_on_order = LineItem.objects.all().filter(order_id = user_order[0].id)
