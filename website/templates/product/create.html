@@ -4,8 +4,8 @@
 
 
     <form action="{% url 'website:sell' %}" method="post">
-      {% csrf_token %}
-      {{ product_form.as_p }}
-      <input type="submit" value="Sell It" />
+        {% csrf_token %}
+        {{ product_form.as_p }}
+        <input type="submit" value="Sell It"/>
     </form>
 {% endblock %}
