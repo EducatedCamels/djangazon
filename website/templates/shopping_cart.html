@@ -14,7 +14,7 @@
 
     {% else %}
     <p><strong>Order Total: ${{ total }} </strong></p>
-    <form action="{% url 'website:paymentlist' %}">
+    <form action="{% url 'website:completeorder' %}">
       <input type="submit" value="Checkout" />
     </form>
     {% endif %}

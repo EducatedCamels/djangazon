@@ -2,7 +2,7 @@
 {% block content %}
     <h1>My Payments</h1>
 
-    <form action="{% url 'website:paymentlist' %}" method="post">
+    <form action="{% url 'website:completeorder' %}" method="post">
     {% csrf_token %}
         <select name="payment_type">
         {% for payment_type in all_payment_types %}
@@ -10,7 +10,7 @@
         {% endfor %}
         </select>
         {% if not all_payment_types %}
-            <a href="{% url 'website:payment_type' %}">Add Payment</a>
+            <a href="{% url 'website:add_payment_type' %}">Add Payment</a>
         {% else %}
             <input type="submit" value="Complete Order"/>
     </form>

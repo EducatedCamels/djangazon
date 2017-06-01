@@ -155,7 +155,7 @@ def add_payment_type(request):
 
     if request.method == 'GET':
         payment_type_form = PaymentTypeForm()
-        template_name = 'payment.html'
+        template_name = 'add_payment_type.html'
         return render(request, template_name, {'payment_type_form': payment_type_form})
 
     elif request.method == 'POST':

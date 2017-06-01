@@ -9,7 +9,7 @@ from website.forms import UserForm
 from website.models import PaymentType, Order
 
 
-def all_payment_types(request):
+def complete_order(request):
     """
     purpose: gets users payment types and posts payment type to user open order.
     author: James Tonkin
@@ -19,7 +19,7 @@ def all_payment_types(request):
     if request.method == "GET":
         user = request.user
         all_payment_types = PaymentType.objects.filter(user_id=user.id)
-        template_name = 'list_payment.html'
+        template_name = 'complete_order.html'
         payment_type_dict = {'all_payment_types': all_payment_types}
         return render(request, template_name, payment_type_dict)
 
@@ -31,9 +31,6 @@ def all_payment_types(request):
             user = request.user
         )
         payment = PaymentType.objects.get(id=form_data["payment_type"])
-        print("-----------------------")
-        print(user_order)
-        print("-----------------------")
         user_order[0].payment_type = payment
         user_order[0].save()
 
