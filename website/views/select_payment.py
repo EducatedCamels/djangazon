@@ -4,6 +4,7 @@ from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.template import RequestContext
 
+from website.views.views import success
 from website.forms import UserForm
 from website.models import PaymentType, Order
 
@@ -23,4 +24,17 @@ def all_payment_types(request):
         return render(request, template_name, payment_type_dict)
 
     elif request.method == 'POST':
-        user_order = Order.objects.get_or_create(payment_type_id = None, user_id = user.id)
+        form_data = request.POST
+        user = request.user
+        user_order = Order.objects.get_or_create(
+            payment_type_id = None,
+            user = request.user
+        )
+        payment = PaymentType.objects.get(id=form_data["payment_type"])
+        print("-----------------------")
+        print(user_order)
+        print("-----------------------")
+        user_order[0].payment_type = payment
+        user_order[0].save()
+
+        return HttpResponseRedirect('/success')

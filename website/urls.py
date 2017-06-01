@@ -9,6 +9,7 @@ from website.views.select_payment import *
 app_name = "website"
 urlpatterns = [
     url(r'^$', index, name='index'),
+    url(r'^success$', success, name='success'),
     url(r'^login$', login_user, name='login'),
     url(r'^logout$', user_logout, name='logout'),
     url(r'^register$', register, name='register'),

@@ -22,7 +22,6 @@ def shopping_cart(request):
     template_name = 'shopping_cart.html'
 
     products_on_order = LineItem.objects.all().filter(order_id = user_order[0].id)
-    print('Products on order: ', products_on_order[0])
     total = 0
     for product_price in products_on_order:
         total += product_price.product.price

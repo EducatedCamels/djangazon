@@ -13,6 +13,10 @@ def index(request):
     all_products = Product.objects.all().order_by('-id')[:20]
     return render(request, template_name, {'products': all_products})
 
+def success(request):
+    template_name = 'product/success.html'
+    return render(request, template_name, {})
+
 
 # Create your views here.
 def register(request):
