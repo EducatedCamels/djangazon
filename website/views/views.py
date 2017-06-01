@@ -13,6 +13,10 @@ def index(request):
     all_products = Product.objects.all().order_by('-id')[:20]
     return render(request, template_name, {'products': all_products})
 
+def success(request):
+    template_name = 'product/success.html'
+    return render(request, template_name, {})
+
 
 # Create your views here.
 def register(request):
@@ -151,7 +155,7 @@ def add_payment_type(request):
 
     if request.method == 'GET':
         payment_type_form = PaymentTypeForm()
-        template_name = 'payment.html'
+        template_name = 'add_payment_type.html'
         return render(request, template_name, {'payment_type_form': payment_type_form})
 
     elif request.method == 'POST':
@@ -162,14 +166,4 @@ def add_payment_type(request):
             account_number=form_data['account_number'],
         )
         p.save()
-        template_name = 'payment.html'
-        return render(request, template_name, {'paymenttype': form_data})
-
-def all_payment_types(request):
-        user = request.user
-        all_payment_types = PaymentType.objects.filter(user_id=user.id)
-        template_name = 'list_payment.html'
-        payment_type_dict = {'all_payment_types': all_payment_types}
-        return render(request, template_name, payment_type_dict)
-
- 
+        return HttpResponseRedirect('/categories')

@@ -1,14 +1,11 @@
-{% load staticfiles %}
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>Bangazon</title>
-  </head>
-  <body>
+{% extends "index.html" %}
+{% block content %}
 
-    <h1>Product Added</h1>
 
-    <a href="{% url 'website:list_products' %}">List Products</a>
-  </body>
-</html>
+    <h1>Order completed Successfully</h1>
+
+    <a href="{% url 'website:index' %}">Return to Bangazon</a>
+
+
+
+{% endblock %}

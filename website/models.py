@@ -107,4 +107,7 @@ class LineItem(models.Model):
         Order,
         on_delete = models.CASCADE,
     )
-    product = models.ForeignKey(Product)
+    product = models.ForeignKey(
+        Product,
+        on_delete = models.CASCADE,
+    )
