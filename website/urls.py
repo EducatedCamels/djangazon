@@ -6,7 +6,7 @@ from website.views.single_category import *
 from website.views.shopping_cart_view import *
 from website.views.complete_order import *
 from website.views.product_search_view import product_search
-from website.views.list_payments import delete_payment
+from website.views.user_payment_options_view import delete_payment
 
 
 app_name = "website"
