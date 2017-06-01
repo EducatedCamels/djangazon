@@ -1,12 +1,11 @@
-
 from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render
 from django.template import RequestContext
 
-from website.forms import UserForm, ProductForm, PaymentTypeForm
-from website.models import Product, Category, PaymentType
+from website.forms import UserProfileForm, UserForm, ProductForm, PaymentTypeForm
+from website.models import User, Product, Category, PaymentType, Customer
 
 def index(request):
     template_name = 'index.html'
@@ -29,7 +28,13 @@ def register(request):
     # Create a new user by invoking the `create_user` helper method
     # on Django's built-in User model
     if request.method == 'POST':
-        user_form = UserForm(data=request.POST)
+        # user_form = UserForm(data=request.POST)
+        data = request.POST
+        user = User.objects.create_user(
+            username = data['username'],
+            password = data['password'],
+
+        )
 
         if user_form.is_valid():
             # Save the user's form data to the database.
@@ -39,7 +44,7 @@ def register(request):
             # Once hashed, we can update the user object.
             user.set_password(user.password)
             user.save()
-
+            customer = Customer(pk=user_id[1])
             # Update our variable to tell the template registration was successful.
             registered = True
 
@@ -91,7 +96,6 @@ def user_logout(request):
     # Take the user back to the homepage. Is there a way to not hard code
     # in the URL in redirects?????
     return HttpResponseRedirect('/')
-
 
 def sell_product(request):
 
@@ -157,3 +161,7 @@ def all_payment_types(request):
         template_name = 'list_payment.html'
         payment_type_dict = {'all_payment_types': all_payment_types}
         return render(request, template_name, payment_type_dict)
+
+# def delete_payment_type(request):
+#         user = request.user
+#         delete_payment_type = all_payment_types.delete()

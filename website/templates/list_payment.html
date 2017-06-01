@@ -4,8 +4,7 @@
 
     {% for payment_type in all_payment_types %}
         <ul>
-        <li id="{{payment_type.id}}">{{ payment_type.name }} - {{payment_type.account_number}}</li>
+        <li id="{{payment_type.id}}">{{ payment_type.name }} - {{payment_type.account_number}} <button type="submit" name="button" value="submit">Delete</button></li>
         </ul>
     {% endfor %}
 {% endblock %}
-

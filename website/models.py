@@ -107,3 +107,23 @@ class LineItem(models.Model):
         on_delete = models.CASCADE,
     )
     product = models.ForeignKey(Product)
+
+class Customer(models.Model):
+    """
+    purpose: pulls in default user model and creates a Customer class
+    author: Helana Nosrat
+    args:models.Model
+    returns: N/A
+    """
+    user = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+        primary_key=True,
+    )
+    customer = models.OneToOneField(
+        Customer,
+        on_delete=models.CASCADE,
+        primary_key=True,
+    )
+    address = models.CharField(max_length=100, blank=True),
+    phone = models.CharField(max_length=12, blank=True),

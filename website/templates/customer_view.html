@@ -1,0 +1,14 @@
+{% extends "index.html" %}
+{% block content %}
+        {% if user.is_authenticated %}
+        <h1>My Settings</h1>
+        <h4>First Name: </h4><input type="submit" value="{{user.first_name}}" />
+        <h4>Last Name: </h4><input type="submit" value="{{user.last_name}}" />
+        <h4>Address: </h4><input type="submit" value="{{customer.address}}" />
+        <h4>Phone: </h4><input type="submit" value="{{customer.phone}}" />
+        <h4>Order History:</h4>
+        <h4><a href="{% url 'website:payment_type' %}">Payment Options</a></h4>
+        <h4><a href="{% url 'website:paymentlist' %}">Payment List</a></h4>
+	      <input type="submit" value="Edit" />
+        {% endif %}
+{% endblock %}

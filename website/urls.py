@@ -21,5 +21,6 @@ urlpatterns = [
     url(r'^paymentlist$', all_payment_types, name='paymentlist'),
     url(r'^single_category/(?P<category_id>.+?)/$', single_category, name='single_category'),
     url(r'^shopping_cart$', shopping_cart, name='shopping_cart'),
-    url(r'^user_profile$', user_profile, name='user_profile'),
+    url(r'^customer_view$', customer, name='customer'),
+    # url(r'^edit_user/(?P<user_id>.+?)/$', update_profile, name='edit_user'),
 ]
