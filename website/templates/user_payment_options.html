@@ -1,0 +1,18 @@
+{% extends "index.html" %}
+{% block content %}
+    <h1>My Payments</h1>
+
+    <form action="{% url 'website:user_payment_options' %}" method="post">
+    {% csrf_token %}
+        <select name="payment_list">
+        {% for payment_type in all_payment_types %}
+            <option id="{{payment_type.id}}" name="{{payment_type.id}}" value="{{payment_type.id}}">{{ payment_type.name }} - {{payment_type.account_number}}</option>
+        {% endfor %}
+        </select>
+        {% if not all_payment_types %}
+            <a href="{% url 'website:add_payment_type' %}">Add Payment</a>
+        {% else %}
+            <input type="submit" value="Complete Order"/>
+    </form>
+    {% endif %}
+{% endblock %}
