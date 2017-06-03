@@ -18,6 +18,8 @@ def category_list(request):
     that rendered text.
     """
     categories = Category.objects.all()
-    template_name = 'product/category_list.html'
+    for i in categories:
+        print(i)
+    template_name = 'product/create.html'
     cat_dict = {'categories': categories}
     return render(request, template_name, cat_dict)

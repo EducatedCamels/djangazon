@@ -2,10 +2,65 @@
 {% block content %}
     <h1>Sell Product</h1>
 
+<form action="{% url 'website:sell' %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <br>
+    <div>
+        <div class="col-sm-10">
+            <input type="text" class="text" name="title" value="" placeholder="Title">
+        </div>
+        <br><br>
+        <div class="col-sm-10">
+            <input type="text" class="text" name="description" value="" placeholder="Description">
+        </div>
+        <br><br>
+        <div class="col-sm-10">
+            <input type="text" class="text" name="price" value="" placeholder="Price">
+        </div>
+        <br><br>        
+        <div class="col-sm-10">
+            <input type="text" class="text" name="quantity" value="" placeholder="Quantity">
+        </div>
+         <div class="col-sm-10">
+            <input type="text" class="text" name="quantity" value="" placeholder="City">
+        </div>
+        <br><br>        
+        <div class="col-sm-10">
+           <span style="font: .75 rem"><input type="checkbox" name="subscribe" value="newsletter">mark product local delivery only</span><!-- in views.py line 138:     form_data['is_local']:      when selected, will set Boolean value of 'is_local' to True     -->
+        </div>
+        <br><br>
 
-    <form action="{% url 'website:sell' %}" method="post">
-        {% csrf_token %}
-        {{ product_form.as_p }}
-        <input type="submit" value="Sell It"/>
-    </form>
+    <div class="col-sm-10">
+        <div class="dropdown cool-buttons">
+            <select required class="dropdown-toggle" label="Product Categories" name=''>
+                    {% for category in categories %}
+                    <option name="{{category.name}}" value="{{category.id}}">{{category.name}}</option>
+                    {% endfor %}
+            </select>
+        </div>
+    </div>
+        <div>
+            <input type="file" name="myfile">  <!-- here's the UPLOAD button -->
+        </div>
+        <br>
+        <br>
+        <div class="col-sm-10">
+            <input type="submit" class="btn btn-default cool-buttons" name="button" value="Sell Product">
+        </div>
+    </div>
+</form>
 {% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
