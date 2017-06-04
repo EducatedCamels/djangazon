@@ -1,5 +1,23 @@
 {% extends "index.html" %}
 {% block content %}
+
+
+{% load thumbnail %}
+{% load staticfiles %}
+
+    <h3>Product Detail</h3>
+
+    <ul>
+    {% if product.product_photo %}
+      <li>
+        {% thumbnail product.product_photo "250x250" crop="center" as im %}
+          <a href="{{ product.product_photo.url }}" target="_new">
+          <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
+          </a>
+        {% endthumbnail %}
+      </li>
+    {% endif %}
+
 <div class="col-sm-10 col-sm-offset-1">
     <h1>{{ product.title }}</h1>
 </div>
@@ -13,7 +31,7 @@
             <p>SOLD OUT</p>
         {%else %}
             <p>{{product.quantity}}</p>
-            <img src="{{ product.product_image }}" alt="Meg Armstrong">
+            <img src="{{ product.product_image }}" alt="product photo>
         {%endif%}
      <p>{% if product.city %}</p>
             <h4>Product Location: {{product.city}}</h4>
