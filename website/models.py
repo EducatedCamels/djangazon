@@ -1,6 +1,8 @@
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator
 from django.db import models
+from sorl.thumbnail import ImageField
+
 
 
 options = (
@@ -46,7 +48,7 @@ class Category(models.Model):
 class Product(models.Model):
     """
     purpose: creates the product table in the database
-    author: James Tonkin
+    author: James Tonkin, Bri Wyatt
     args: models.Model
     returns: N/A
     """
@@ -60,14 +62,16 @@ class Product(models.Model):
         on_delete = models.CASCADE,
     )
     title = models.CharField(max_length = 255)
-    # Come back to the price field, in order to not allow negative numbers
-    price = models.DecimalField(max_digits = 19, decimal_places = 2, validators = [MinValueValidator(0.0)])
+    price = models.DecimalField(max_digits = 19, decimal_places = 2, validators = [MinValueValidator(0.0)])    # Come back to the price field, in order to not allow negative numbers
     description = models.TextField(blank = True, null = True)
     quantity = models.PositiveIntegerField()
     is_local = models.BooleanField(default=False)
     city = models.CharField(max_length = 255, blank = True, null = True)
-    photo = models.FileField(null = True)
+    photo = models.ImageField(blank = True, null = True)
     date = models.DateTimeField(auto_now_add=True, blank=True)
+
+    def __str__(self):
+        return self.title
 
 class PaymentType(models.Model):
     """

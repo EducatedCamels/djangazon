@@ -100,7 +100,7 @@ def user_logout(request):
 def sell_product(request):
 
     """
-    purpose: allows an authorized user to list an item for sale
+    purpose: allows user to list an item for sale by after submitting a form 
     author: Dean Smith, Helana Nosrat, Bri Wyatt
     args: request allows Django to see user session data
     """
@@ -108,47 +108,37 @@ def sell_product(request):
     if request.method == 'GET':
         product_form = ProductForm()
         template_name = 'product/create.html'
-        categories = Category.objects.all()
-        data = {
-            'product_form': product_form,
-            'categories': categories,
-        }
-        return render(request, template_name, data,)
-
-
+        return render(request, template_name, {'product_form': product_form})
 
     elif request.method == 'POST':
         form_data = request.POST
-        p = Product(
-            seller = request.user,
-            f = form_data['category'],
-            title = form_data['title'],
-            description = form_data['description'],
-            price = form_data['price'],
-            quantity = form_data['quantity'],
-            city = form_data['city'],
-            is_local = form_data['boolean'],
-            date = 'date',
-            photo = form_data['photo'],
-        )
-        p.save()
-        return HttpResponseRedirect('/')
-
 
         def post_product(boolean):
             c = Category.objects.get(pk=form_data['category'])
-            # return p
+            p = Product(
+                seller = request.user,
+                title = form_data['title'],
+                description = form_data['description'],
+                price = form_data['price'],
+                quantity = form_data['quantity'],
+                is_local = boolean,
+                city = form_data['city'],
+                date = 'date',
+                category = c,
+            )
+            p.save()
+            return p
+        try:
+            if form_data['is_local']:
+                product = post_product(True)
+                template_name = 'product/product_detail.html'
+                return render(request, template_name, {'product': form_data})
+
+        except KeyError:
+            product = post_product(False)
             template_name = 'product/product_detail.html'
-            return render(request, )
+            return render(request, template_name, {'product': form_data})
 
-        # try:
-        #     if form_data['is_local'] is True:
-        #         product = post_product(True)
-        #         return render(request, template_name, {'product': form_data})
-
-        # except KeyError:
-        #     product = post_product(False)
-        #     return render(request, template_name, {'product': form_data})
 
 def list_products(request):
     all_products = Product.objects.all()
