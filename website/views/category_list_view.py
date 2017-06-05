@@ -17,9 +17,9 @@ def category_list(request):
     from the Category and Product class to return the request with a view of
     that rendered text.
     """
+    template_name = 'product/category_list.html'
     categories = Category.objects.all()
     for i in categories:
         print(i)
-    template_name = 'product/create.html'
     cat_dict = {'categories': categories}
     return render(request, template_name, cat_dict)
