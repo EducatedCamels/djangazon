@@ -124,6 +124,7 @@ def sell_product(request):
                 is_local = boolean,
                 city = form_data['city'],
                 date = 'date',
+                photo = form_data['photo'],
                 category = c,
             )
             p.save()
