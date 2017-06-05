@@ -1,23 +1,48 @@
 {% extends "index.html" %}
 {% block content %}
-        {% if user.is_authenticated %}
-            <h1>My Settings</h1>
-
-
-             <form action="{% url 'website:user_profile' %}" method='post'>
-                {% csrf_token %}
-                {{ user_form.as_p }}
-                <h4>First Name: </h4><input type="text" value="{{user.first_name}}" />
-                <h4>Last Name: </h4><input type="text" value="{{user.last_name}}" />
-                <h4>Address: </h4><input type="text" value="{{user.userprofile.address}}" />
-                <h4>Phone: </h4><input type="text" value="{{user.phone}}" />
-                <h4>Order History:</h4>
-                <h4><a href="{% url 'website:add_payment_type' %}">Payment Options</a></h4>
-
-
-                <ul>
-
-                      <li><a href="{%url 'website:edit_user_profile' %}">Edit Account</a></li>
-                </ul>
-        {% endif %}
-{% endblock content%}
+    {% if user.is_authenticated %}
+        <div class="row text-center">
+            <h1>My Account Information</h1>
+        </div>
+        <hr><br>
+        <div class="row">
+            <div class="col-md-4">
+                <h2>My Information</h2>
+                <h4>Email: {{ user.email }} </h4>
+                <h4>First Name: {{ user.first_name }} </h4>
+                <h4>Last Name: {{ user.last_name }} </h4>
+                <h4>Address: {{ user_profile.address }} </h4>
+                <h4>Phone: {{ user_profile.phone }} </h4>
+                <form action="{% url 'website:edit_user_profile' %}">
+                    <button class="btn btn-info" type="submit">Edit Profile</button>
+                </form>
+            </div>
+            <div class="col-md-4">
+                <h2>Order History:</h2>
+                {% for order in previous_orders %}
+                    <ul>
+                        <li id="{{ order.id }}"> {{ order.id }}
+                        </li>
+                    </ul>
+                {% empty %}
+                    Oh No! You don't have any orders yet! Go buy stuff.
+                {% endfor %}
+            </div>
+            <div class="col-md-4">
+                <h2>Payment Options</h2>
+                {% for payment in payment_types %}
+                    <ul>
+                        <li id="{{ payment.id }}">{{ payment.name }} - {{ payment.account_number }}
+                        </li>
+                    </ul>
+                {% empty %}
+                    Oh No! You don't have any payment methods added yet!
+                    <br><br>
+                {% endfor %}
+                <form action="{% url 'website:add_payment_type' %}">
+                    <button class="btn btn-info" type="submit">Go Add One!</button>
+                </form>
+            </div>
+        </div>
+    {% endif %}
+{% endblock content %}

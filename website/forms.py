@@ -17,11 +17,6 @@ class UserProfileForm(forms.ModelForm):
         model = UserProfile
         fields = ('address', 'phone',)
 
-# class EditUserProfileForm(forms.ModelForm):
-#
-#     class Meta:
-#         model = UserProfile
-#         fields = ('address', 'phone',)
 
 class ProductForm(forms.ModelForm):
 

@@ -1,11 +1,24 @@
 {% extends 'index.html' %}
-<!-- {% block content %} -->
-<h1> Edit Account </h1>
-    <form action="{% url 'website:edit_entry' %}" method='post'>
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Update" />
-        <!-- <button name="submit"> Save Changes </button> -->
-    </form>
 
-<!-- {% endblock content %} -->
+{% block content %}
+    <div class="row text-center">
+        <h2>EditAccount Information:</h2>
+    </div>
+    <hr>
+    <br>
+    <div class="row">
+        <div class="col-md-12">
+            <form action="{% url 'website:edit_user_profile' %}" method="post">
+                {% csrf_token %}
+                <h5>First Name:</h5><input type="text" name="first_name" value="{{ active_user.user.first_name }}"><br>
+                <h5>Last Name:</h5><input type="text" name="last_name" value="{{ active_user.user.last_name }}"><br>
+                <h5>Email:</h5><input type="text" name="email" value="{{ active_user.user.email }}"><br>
+                <h5>Phone:</h5><input type="text" name="phone" value="{{ active_user.phone }}"><br>
+                <h5>Street address:</h5><input type="text" name="address"
+                                               value="{{ active_user.address }}"><br><br>
+                <input type="submit" class="btn btn-success btn-small" value="Update"/>
+            </form>
+        </div>
+    </div>
+
+{% endblock content %}

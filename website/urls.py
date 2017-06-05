@@ -24,6 +24,6 @@ urlpatterns = [
     url(r'^single_category/(?P<category_id>.+?)/$', single_category, name='single_category'),
     url(r'^shopping_cart$', shopping_cart, name='shopping_cart'),
     url(r'^product_search$', product_search, name='product_search'),
-    url(r'^user_profile$', user_profile, name='user_profile'),
+    url(r'^user_profile$', user_profile_view, name='user_profile'),
     url(r'^edit_user_profile$', edit_user_profile, name='edit_user_profile')
 ]
