@@ -3,7 +3,7 @@
     <h1>My Cart</h1>
     {% for lineitem in products_on_order %}
     <ul>
-        <li id="{{lineitem.id}}"><a href="{% url 'website:product_detail' lineitem.id %}">{{lineitem.product.title}} - ${{lineitem.product.price}}</a>
+        <li id="{{lineitem.product.id}}"><a href="{% url 'website:product_detail' lineitem.product.id %}">{{lineitem.product.title}} - ${{lineitem.product.price}}</a>
         <form action="{% url 'website:shopping_cart' %}" method="post">
         {% csrf_token %}
 
