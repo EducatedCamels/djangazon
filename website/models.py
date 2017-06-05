@@ -52,7 +52,7 @@ class Product(models.Model):
     category = models.ForeignKey(
         Category,
         on_delete = models.CASCADE,
-        related_name = 'product'
+        related_name = 'products'
     )
     seller = models.ForeignKey(
         User,
