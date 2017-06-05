@@ -8,6 +8,11 @@ from website.views.complete_order import *
 from website.views.product_search_view import product_search
 from website.views.user_payment_options_view import delete_payment
 
+from django.conf import settings
+from django.conf.urls.static import static
+
+
+
 
 app_name = "website"
 urlpatterns = [
@@ -29,3 +34,5 @@ urlpatterns = [
     url(r'^user_payment_options$', delete_payment, name='user_payment_options'),
 
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
