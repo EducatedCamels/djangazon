@@ -3,8 +3,14 @@ from django.core.validators import MinValueValidator
 from django.db.models.signals import post_save
 from django.db import models
 from django.dispatch import receiver
+from sorl.thumbnail import ImageField
 
 
+
+options = (
+        (0, 'False'),
+        (1, 'True'),
+)
 # Create your models here.
 
 class UserProfile(models.Model):
@@ -69,27 +75,30 @@ class Category(models.Model):
 class Product(models.Model):
     """
     purpose: creates the product table in the database
-    author: James Tonkin
+    author: James Tonkin, Bri Wyatt
     args: models.Model
     returns: N/A
     """
     category = models.ForeignKey(
         Category,
         on_delete = models.CASCADE,
-        related_name = 'product'
+        related_name = 'products'
     )
     seller = models.ForeignKey(
         User,
         on_delete = models.CASCADE,
     )
     title = models.CharField(max_length = 255)
-    # Come back to the price field, in order to not allow negative numbers
-    price = models.DecimalField(max_digits = 19, decimal_places = 2, validators = [MinValueValidator('0.0')])
+    price = models.DecimalField(max_digits = 19, decimal_places = 2, validators = [MinValueValidator(0.0)])    # Come back to the price field, in order to not allow negative numbers
     description = models.TextField(blank = True, null = True)
     quantity = models.PositiveIntegerField()
     is_local = models.BooleanField(default=False)
     city = models.CharField(max_length = 255, blank = True, null = True)
+    photo = models.ImageField(blank = True, null = True)
     date = models.DateTimeField(auto_now_add=True, blank=True)
+
+    def __str__(self):
+        return self.title
 
 class PaymentType(models.Model):
     """
@@ -98,12 +107,10 @@ class PaymentType(models.Model):
     args: models.Model
     returns: N/A
     """
-    user = models.ForeignKey(
-        User,
-        on_delete = models.CASCADE,
-    )
+    user = models.ForeignKey(User)
     name = models.CharField(max_length = 255)
     account_number = models.IntegerField()
+    enabled = models.IntegerField(default=1, choices=options)
 
 class Order(models.Model):
     """
@@ -118,7 +125,6 @@ class Order(models.Model):
     )
     payment_type = models.ForeignKey(
         PaymentType,
-        on_delete = models.CASCADE,
         null = True,
         blank = True
     )

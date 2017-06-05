@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.template import RequestContext
+from django.core.files.storage import FileSystemStorage
 
 from website.forms import UserForm, UserProfileForm, ProductForm, PaymentTypeForm
 from website.models import Product, Category, PaymentType, UserProfile, Order
@@ -98,8 +99,8 @@ def user_logout(request):
 
 def sell_product(request):
     """
-    purpose: add a payment type to the data base
-    author: Dean Smith, Helana Nosrat
+    purpose: allows user to list an item for sale by after submitting a form
+    author: Dean Smith, Helana Nosrat, Bri Wyatt
     args: request allows Django to see user session data
     """
 
@@ -110,34 +111,43 @@ def sell_product(request):
 
     elif request.method == 'POST':
         form_data = request.POST
-        print(form_data)
 
         def post_product(boolean):
+            myfile = request.FILES['photo']
+            fs = FileSystemStorage()
+            filename = fs.save(myfile.name, myfile)
+            uploaded_file_url = fs.url(filename)
+
+            print("photo url", uploaded_file_url)
+
             c = Category.objects.get(pk=form_data['category'])
             p = Product(
-                seller=request.user,
-                title=form_data['title'],
-                description=form_data['description'],
-                price=form_data['price'],
-                quantity=form_data['quantity'],
-                is_local=boolean,
-                city=form_data['city'],
-                date='date',
-                category=c,
+                seller = request.user,
+                title = form_data['title'],
+                description = form_data['description'],
+                price = form_data['price'],
+                quantity = form_data['quantity'],
+                is_local = boolean,
+                city = form_data['city'],
+                date = 'date',
+                photo = uploaded_file_url,
+                category = c,
             )
+
             p.save()
             return p
 
         try:
             if form_data['is_local']:
+                print("is local")
                 product = post_product(True)
                 template_name = 'product/product_detail.html'
-                return render(request, template_name, {'product': form_data})
+                return render(request, template_name, {'product': product})
 
         except KeyError:
             product = post_product(False)
             template_name = 'product/product_detail.html'
-            return render(request, template_name, {'product': form_data})
+            return render(request, template_name, {'product': product})
 
 
 def list_products(request):

@@ -1,18 +1,57 @@
 {% extends "index.html" %}
 {% block content %}
-	<h1>Product title: {{product.title}}</h1>
-	<h4>Product Description: {{product.description}}</h4>
-	<h4>Product Quantity: {{product.quantity}}</h4>
-	<h4>Product Price: {{product.price}}</h4>
-{% if product.city %}
-	<h4>Product Location: {{product.city}}</h4>
-{% endif %}
-	{% if user.is_authenticated %}
-        <form action="{% url 'website:add_to_cart' %}" method="POST">
-            {% csrf_token %}
-            {{ add_to_cart_form.as_p }}
-            <input type="hidden" value="{{ product.id }}" name="product_id"/>
-            <input type="submit" value="Add to Order"/>
-        </form>
+
+
+{% load thumbnail %}
+{% load staticfiles %}
+
+    <h3>Product Detail</h3>
+
+    <ul>
+    {% if product.photo %}
+      <li>
+        {% thumbnail product.photo "250x250" crop="center" as im %}
+          <a href="{{ product.photo.url }}" target="_new">
+          <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
+          </a>
+        {% endthumbnail %}
+      </li>
     {% endif %}
+
+      <li><h1>{{ product.title }}</h1></li>
+      <li><h2>{{ product.description }}</h2></li>
+      <p>${{ product.price }}</p>
+        {%if product.quantity == 0 %}
+            <p>SOLD OUT</p>
+        {%else %}
+            <p>{{product.quantity}}</p>
+        {%endif%}
+     {% if product.city %}
+            <h4>Product Location: {{product.city}}</h4>
+            <img src="{{ product.photo }}" alt="product photo">
+        {% endif %}
+      </ul>
+
+{% if request.user.is_authenticated %}
+
+<form action="{% url 'website:add_to_cart' %}" method="post">
+    {% csrf_token %}
+    {{ add_to_cart_form.as_p }}
+    <input type="hidden" value="{{ product.id }}" name="product_id"/>
+    <input type="submit" value="Add to Order"/>
+    {% csrf_token %}
+  </form>
+  {% endif %}
 {% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+

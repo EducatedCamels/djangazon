@@ -13,11 +13,12 @@ def product_search(request):
     returns: a filtered list of products that match the query
     """
 
-    all_products = Product.objects.all().order_by("title")
+    all_products = Product.objects.all().order_by("title", "city", "category")
     query = request.GET.get("q")
     template_name = 'product/product_search.html'
-    if query:
+    if query:	
         products = all_products.filter(
-            Q(title__contains=query)
+        Q(title__contains=query) | Q(city__contains=query) | Q(category__name__contains=query)
+
         ).distinct()
         return render(request, template_name, {'all_products': products})

@@ -1,11 +1,15 @@
-{% extends "index.html" %}
+{% extends 'index.html' %}
+
 {% block content %}
-    <h1>Sell Product</h1>
+
+{% load staticfiles %}
+    <h3>Add a product to sell:</h3><br>
 
 
-    <form action="{% url 'website:sell' %}" method="post">
-        {% csrf_token %}
-        {{ product_form.as_p }}
-        <input type="submit" value="Sell It"/>
+    <form action="{% url 'website:sell' %}" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ product_form.as_p }}
+      <input type="submit" class="btn btn-success btn-lg" value="Sell It" />
     </form>
+
 {% endblock %}
