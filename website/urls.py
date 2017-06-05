@@ -4,11 +4,13 @@ from website.views.product_details_view import *
 from website.views.category_list_view import *
 from website.views.single_category import *
 from website.views.shopping_cart_view import *
-from website.views.user_profile import *
+from website.views.complete_order import *
+from website.views.product_search_view import product_search
 
 app_name = "website"
 urlpatterns = [
     url(r'^$', index, name='index'),
+    url(r'^success$', success, name='success'),
     url(r'^login$', login_user, name='login'),
     url(r'^logout$', user_logout, name='logout'),
     url(r'^register$', register, name='register'),
@@ -17,10 +19,11 @@ urlpatterns = [
     url(r'^categories$', category_list, name='categories'),
     url(r'^product_detail/(?P<product_id>.+?)/$', product_detail, name='product_detail'),
     url(r'^addtocart$', add_to_cart, name='add_to_cart'),
-    url(r'^paymenttype$', add_payment_type, name='payment_type'),
-    url(r'^paymentlist$', all_payment_types, name='paymentlist'),
+    url(r'^addpaymenttype$', add_payment_type, name='add_payment_type'),
+    url(r'^completeorder$', complete_order, name='completeorder'),
     url(r'^single_category/(?P<category_id>.+?)/$', single_category, name='single_category'),
     url(r'^shopping_cart$', shopping_cart, name='shopping_cart'),
-    url(r'^customer_view$', customer, name='customer'),
-    # url(r'^edit_user/(?P<user_id>.+?)/$', update_profile, name='edit_user'),
+    url(r'^product_search$', product_search, name='product_search'),
+    url(r'^user_profile$', user_profile, name='user_profile'),
+    url(r'^edit_user_profile$', edit_user_profile, name='edit_user_profile')
 ]

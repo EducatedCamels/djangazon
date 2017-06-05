@@ -1,9 +1,36 @@
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator
+from django.db.models.signals import post_save
 from django.db import models
+from django.dispatch import receiver
 
 
 # Create your models here.
+
+class UserProfile(models.Model):
+    """
+    purpose: pulls in default user model and creates a UserProfile class
+    author: Helana Nosrat
+    args:models.Model
+    returns: N/A
+    """
+    # user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User)
+    address = models.CharField(max_length=100, blank=True)
+    phone = models.CharField(max_length=12, blank=True)
+    # s = models.SlugField()
+
+
+
+    # @receiver(post_save, sender=User)
+    # def create_user_profile(sender, instance, created, **kwargs):
+    #     if created:
+    #         UserProfile.objects.create(user=instance)
+    #
+    # @receiver(post_save, sender=User)
+    # def save_user_profile(sender, instance, **kwargs):
+    #     instance.userprofile.save()
+
 class Category(models.Model):
     """
     purpose: creates the category table in the database
@@ -60,7 +87,8 @@ class Product(models.Model):
     price = models.DecimalField(max_digits = 19, decimal_places = 2, validators = [MinValueValidator('0.0')])
     description = models.TextField(blank = True, null = True)
     quantity = models.PositiveIntegerField()
-    city = models.CharField(max_length = 255)
+    is_local = models.BooleanField(default=False)
+    city = models.CharField(max_length = 255, blank = True, null = True)
     date = models.DateTimeField(auto_now_add=True, blank=True)
 
 class PaymentType(models.Model):
@@ -106,24 +134,8 @@ class LineItem(models.Model):
         Order,
         on_delete = models.CASCADE,
     )
-    product = models.ForeignKey(Product)
 
-class Customer(models.Model):
-    """
-    purpose: pulls in default user model and creates a Customer class
-    author: Helana Nosrat
-    args:models.Model
-    returns: N/A
-    """
-    user = models.OneToOneField(
-        User,
-        on_delete=models.CASCADE,
-        primary_key=True,
+    product = models.ForeignKey(
+        Product,
+        on_delete = models.CASCADE,
     )
-    customer = models.OneToOneField(
-        Customer,
-        on_delete=models.CASCADE,
-        primary_key=True,
-    )
-    address = models.CharField(max_length=100, blank=True),
-    phone = models.CharField(max_length=12, blank=True),

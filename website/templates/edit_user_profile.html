@@ -1,0 +1,11 @@
+{% extends 'index.html' %}
+<!-- {% block content %} -->
+<h1> Edit Account </h1>
+    <form action="{% url 'website:edit_entry' %}" method='post'>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Update" />
+        <!-- <button name="submit"> Save Changes </button> -->
+    </form>
+
+<!-- {% endblock content %} -->

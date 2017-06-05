@@ -3,14 +3,19 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render
 from django.template import RequestContext
+from django.urls import reverse
 
-from website.forms import UserProfileForm, UserForm, ProductForm, PaymentTypeForm
-from website.models import User, Product, Category, PaymentType, Customer
+from website.forms import UserForm, UserProfileForm, ProductForm, PaymentTypeForm
+from website.models import User, Product, Category, PaymentType, UserProfile
 
 def index(request):
     template_name = 'index.html'
     all_products = Product.objects.all().order_by('-id')[:20]
     return render(request, template_name, {'products': all_products})
+
+def success(request):
+    template_name = 'product/success.html'
+    return render(request, template_name, {})
 
 
 # Create your views here.
@@ -28,11 +33,15 @@ def register(request):
     # Create a new user by invoking the `create_user` helper method
     # on Django's built-in User model
     if request.method == 'POST':
-        # user_form = UserForm(data=request.POST)
+        user_form = UserForm(data=request.POST)
+        profile_form = UserProfileForm(data=request.POST)
+
         data = request.POST
         user = User.objects.create_user(
             username = data['username'],
             password = data['password'],
+            first_name = data['first_name'],
+            last_name = data['last_name'],
 
         )
 
@@ -44,7 +53,12 @@ def register(request):
             # Once hashed, we can update the user object.
             user.set_password(user.password)
             user.save()
-            customer = Customer(pk=user_id[1])
+
+            profile = profile_form.save()
+            profile.user = user
+
+            profile.save()
+            # customer = Customer(pk=user_id[1])
             # Update our variable to tell the template registration was successful.
             registered = True
 
@@ -52,8 +66,9 @@ def register(request):
 
     elif request.method == 'GET':
         user_form = UserForm()
+        profile_form = UserProfileForm()
         template_name = 'register.html'
-        return render(request, template_name, {'user_form': user_form})
+        return render(request, template_name, {'user_form': user_form, 'profile_form': profile_form, 'registered': registered})
 
 
 def login_user(request):
@@ -84,7 +99,6 @@ def login_user(request):
             print("Invalid login details: {}, {}".format(username, password))
             return HttpResponse("Invalid login details supplied.")
 
-
     return render(request, 'login.html', {}, context)
 
 # Use the login_required() decorator to ensure only those logged in can access the view.
@@ -112,19 +126,33 @@ def sell_product(request):
 
     elif request.method == 'POST':
         form_data = request.POST
-        c = Category.objects.get(pk=form_data['category'])
-        p = Product(
-            seller = request.user,
-            title = form_data['title'],
-            description = form_data['description'],
-            price = form_data['price'],
-            quantity = form_data['quantity'],
-            date = 'date',
-            category = c,
-        )
-        p.save()
-        template_name = 'product/product_detail.html'
-        return render(request, template_name, {'product': form_data})
+        print(form_data)
+
+        def post_product(boolean):
+            c = Category.objects.get(pk=form_data['category'])
+            p = Product(
+                seller = request.user,
+                title = form_data['title'],
+                description = form_data['description'],
+                price = form_data['price'],
+                quantity = form_data['quantity'],
+                is_local = boolean,
+                city = form_data['city'],
+                date = 'date',
+                category = c,
+            )
+            p.save()
+            return p
+        try:
+            if form_data['is_local']:
+                product = post_product(True)
+                template_name = 'product/product_detail.html'
+                return render(request, template_name, {'product': form_data})
+
+        except KeyError:
+            product = post_product(False)
+            template_name = 'product/product_detail.html'
+            return render(request, template_name, {'product': form_data})
 
 def list_products(request):
     all_products = Product.objects.all()
@@ -141,7 +169,7 @@ def add_payment_type(request):
 
     if request.method == 'GET':
         payment_type_form = PaymentTypeForm()
-        template_name = 'payment.html'
+        template_name = 'add_payment_type.html'
         return render(request, template_name, {'payment_type_form': payment_type_form})
 
     elif request.method == 'POST':
@@ -152,16 +180,50 @@ def add_payment_type(request):
             account_number=form_data['account_number'],
         )
         p.save()
-        template_name = 'payment.html'
-        return render(request, template_name, {'paymenttype': form_data})
 
-def all_payment_types(request):
-        user = request.user
-        all_payment_types = PaymentType.objects.filter(user_id=user.id)
-        template_name = 'list_payment.html'
-        payment_type_dict = {'all_payment_types': all_payment_types}
-        return render(request, template_name, payment_type_dict)
+        return HttpResponseRedirect('/categories')
 
-# def delete_payment_type(request):
-#         user = request.user
-#         delete_payment_type = all_payment_types.delete()
+
+@login_required
+def userprofiles(request):
+    """Show all user profiles"""
+    userprofiles = UserProfile.objects.filter(owner=request.user)
+    template_name = 'user_profile.html'
+    if request.method == 'GET':
+        return render(request, template_name)
+
+    if request.method == 'POST':
+        return render(request, template_name)
+
+# def edit_user_profile(request):
+#     """Edit an existing entry"""
+#     # user_profile = UserProfile.objects.get(id=user_profile_id)
+#     # user = user_profile.user
+#
+#     if request.method == 'GET':
+#         # Intial request; pre-fill form with current entry
+#         user_profile_form = EditUserProfileForm(instance=request.user)
+#         edit_user_form = UserProfileForm(instance=request.user.user_profile)
+#
+#         return render(request, "edit_entry.html", {
+#             "user_profile_form": user_profile_form,
+#             "edit_user_form": edit_user_form,
+#         })
+#
+#     elif request.method == 'POST':
+#         user_profile_form = EditUserProfileForm(request.POST, instance=request.user)
+#         edit_user_form = UserProfileForm(request.POST, instance=request.user.user_profile)
+#         if user_profile_form.is_valid() and edit_user_form.is_valid():
+#             user_profile_form.save()
+#             edit_user_form = edit_user_form.save(commit=False)
+#             edit_user_form.user = request.user
+#             edit_user_form.save()
+#
+#             return HttpResponseRedirect("user_profile")
+#
+#         else:
+#
+#             return render(request, "edit_entry.html", {
+#                 "user_profile_form": user_profile_form,
+#                 "edit_user_form": edit_user_form,
+#                 })
