@@ -1,9 +1,11 @@
 {% load staticfiles %}
+{% load bootstrap3 %}
 
 <!DOCTYPE html>
-<html>
+<html lang="eng">
 <head>
     <meta charset="utf-8">
+
     <title>Bangazon</title>
  <!--    <link rel="stylesheet" href="/../styles/test.css"> -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
@@ -14,14 +16,39 @@
 <body>
 
 <nav class="navbar navbar-default navbar-static-top">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Djangazon</title>
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <meta name="description" content="">
+    <title>{% block title %} Bangazon {% endblock %}</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script
+  src="https://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous"></script> -->
+</head>
+<body>
+    <!-- Static Navbar -->
+<nav class="navbar navbar-default navbar static-top">
+
     <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar"><span class="glyphicon glyphicon-option-horizontal" aria-hidden="true"></span>
+            </button>
+            <a class="navbar-brand" href="{% url 'website:index' %}">Djangazon</a></div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-right">
         {% if user.is_authenticated %}
-            <ul class="nav navbar-nav">
+
                 <li role="presentation"><a href="{% url 'website:index' %}">Home</a></li>
                 <li role="presentation"><a href="{% url 'website:categories' %}">Product Categories</a></li>
                 <li role="presentation"><a href="{% url 'website:sell' %}">Sell a Product</a></li>
                 <li role="presentation"><a href="{% url 'website:shopping_cart' %}">Shopping Cart</a></li>
-                <li role="presentation"><a href="{% url 'website:add_payment_type' %}">Add A Payment Type</a></li>
+                <li role="presentation"><a href="{% url 'website:user_profile' %}">My Settings</a></li>
                 <li role="presentation"><a href="{% url 'website:logout' %}">Logout</a></li>
             </ul>
             <form class="navbar-form navbar-right" id="searchform" action="{% url 'website:product_search' %}"
@@ -45,11 +72,28 @@
             <p class="navbar-text navbar-right">Bangazon says: you gotta log in to get started! </p>
         {% endif %}
     </div>
+</div>
 </nav>
+
 
 {% block content %}       
 
     <div class="row">
+
+<div class="container">
+    <h3 class="page-header">{% block header %}Welcome to Djangazon {{ user.first_name }}.</h3>
+    <div class='jumbotron'>
+        <h1><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
+            <span class="glyphicon glyphicon-tag" aria-hidden="true"></span>
+            <span class="glyphicon glyphicon-barcode" aria-hidden="true"></span></h1>
+    </div>
+    {% endblock header %}
+
+<div>
+    {% block content %}
+        <h2>Current Top Products:</h2>
+        <ol>
+
             {% for product in products %}
                 <div class="col-md-3">
                     <div class="panel panel-default">
@@ -83,10 +127,15 @@
                     </div>
                 </div>
             {% endfor %}
+
         </div>
     {% endblock %}
 
 
+        </ol>
+    {% endblock content%}
+</div>
+</div>
 </body>
 </html>
 

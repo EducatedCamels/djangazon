@@ -7,6 +7,14 @@ from website.models import PaymentType, Order
 
 
 def delete_payment(request):
+	"""
+    purpose: allows user to delete a payment type when not in use.
+    author: James Tonkin, Dean Smith
+    args: request allows Django to see user session data
+          product_id is used to generate the individual product
+    returns: HttpResponseRedirct to allow user to be view a new url that was not previously specified. Returning
+    render to use request, template_name and payment_type_dict all together.
+    """
 
 	if request.method == "GET":
 		user = request.user

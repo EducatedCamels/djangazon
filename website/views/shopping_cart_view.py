@@ -1,12 +1,5 @@
-from django.contrib.auth import logout, login, authenticate
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import get_object_or_404, render
-from django.http import HttpResponse, HttpResponseRedirect, Http404
-from django.template import RequestContext
-
-from website.forms import ProductForm
-from website.forms import UserForm
-from website.models import Product, Order, LineItem
+from django.shortcuts import render
+from website.models import Order, LineItem
 
 
 def shopping_cart(request):
@@ -17,6 +10,7 @@ def shopping_cart(request):
     returns: Combines product_detail.html with product dictionary and returns
     the request with that rendered text.
     """
+
     if request.method == "GET":
         user_order = Order.objects.get_or_create(payment_type_id = None, user_id = request.user.id)
         template_name = 'shopping_cart.html'
@@ -37,3 +31,4 @@ def shopping_cart(request):
 
         delete_product.delete()
         return HttpResponseRedirect('/shopping_cart')
+

@@ -1,12 +1,31 @@
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator
+from django.db.models.signals import post_save
 from django.db import models
+from django.dispatch import receiver
+from sorl.thumbnail import ImageField
+
+
 
 options = (
         (0, 'False'),
         (1, 'True'),
 )
 # Create your models here.
+
+class UserProfile(models.Model):
+    """
+    purpose: pulls in default user model and creates a UserProfile class
+    author: Helana Nosrat
+    args:models.Model
+    returns: N/A
+    """
+    user = models.ForeignKey(User)
+    address = models.CharField(max_length=100, blank=True)
+    phone = models.CharField(max_length=12, blank=True)
+
+
+
 class Category(models.Model):
     """
     purpose: creates the category table in the database
@@ -45,7 +64,7 @@ class Category(models.Model):
 class Product(models.Model):
     """
     purpose: creates the product table in the database
-    author: James Tonkin
+    author: James Tonkin, Bri Wyatt
     args: models.Model
     returns: N/A
     """
@@ -59,13 +78,16 @@ class Product(models.Model):
         on_delete = models.CASCADE,
     )
     title = models.CharField(max_length = 255)
-    # Come back to the price field, in order to not allow negative numbers
-    price = models.DecimalField(max_digits = 19, decimal_places = 2, validators = [MinValueValidator('0.0')])
+    price = models.DecimalField(max_digits = 19, decimal_places = 2, validators = [MinValueValidator(0.0)])    # Come back to the price field, in order to not allow negative numbers
     description = models.TextField(blank = True, null = True)
     quantity = models.PositiveIntegerField()
     is_local = models.BooleanField(default=False)
     city = models.CharField(max_length = 255, blank = True, null = True)
+    photo = models.ImageField(blank = True, null = True)
     date = models.DateTimeField(auto_now_add=True, blank=True)
+
+    def __str__(self):
+        return self.title
 
 class PaymentType(models.Model):
     """
@@ -107,6 +129,7 @@ class LineItem(models.Model):
         Order,
         on_delete = models.CASCADE,
     )
+
     product = models.ForeignKey(
         Product,
         on_delete = models.CASCADE,
