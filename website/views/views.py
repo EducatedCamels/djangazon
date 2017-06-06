@@ -122,16 +122,16 @@ def sell_product(request):
 
             c = Category.objects.get(pk=form_data['category'])
             p = Product(
-                seller = request.user,
-                title = form_data['title'],
-                description = form_data['description'],
-                price = form_data['price'],
-                quantity = form_data['quantity'],
-                is_local = boolean,
-                city = form_data['city'],
-                date = 'date',
-                photo = uploaded_file_url,
-                category = c,
+                seller=request.user,
+                title=form_data['title'],
+                description=form_data['description'],
+                price=form_data['price'],
+                quantity=form_data['quantity'],
+                is_local=boolean,
+                city=form_data['city'],
+                date='date',
+                photo=uploaded_file_url,
+                category=c,
             )
 
             p.save()
