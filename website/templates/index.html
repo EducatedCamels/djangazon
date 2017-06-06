@@ -1,5 +1,5 @@
 {% load staticfiles %}
-{% load bootstrap3 %}
+<!-- {% load bootstrap3 %} -->
 
 <!DOCTYPE html>
 <html lang="eng">
@@ -29,16 +29,13 @@
     <script
   src="https://code.jquery.com/jquery-3.2.1.min.js"
   integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-  crossorigin="anonymous"></script> -->
+  crossorigin="anonymous"></script>
 </head>
-<body>
+
     <!-- Static Navbar -->
-<nav class="navbar navbar-default navbar static-top">
 
     <div class="container-fluid">
         <div class="navbar-header">
-            <button type="button" class="navbar toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar"><span class="glyphicon glyphicon-option-horizontal" aria-hidden="true"></span>
-            </button>
             <a class="navbar-brand" href="{% url 'website:index' %}">Djangazon</a></div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
@@ -60,7 +57,6 @@
                     <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
                 </button>
             </form>
-            <h3 class="text-center">Welcome to Bangazon {{ user.first_name }}.</h3>
         {% else %}
             <ul class="nav navbar-nav navbar-fixed-top">
                 <li role="presentation"><a href="{% url 'website:index' %}">Home</a></li>
@@ -89,24 +85,25 @@
     </div>
     {% endblock header %}
 
-<div>
-    {% block content %}
+    <div>
         <h2>Current Top Products:</h2>
-        <ol>
+            <ol>
 
             {% for product in products %}
                 <div class="col-md-3">
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <div class="card-container text-center">
+                           <!--  <div class="row">
+                            <div class="col-md-12 card-image">
+                                {%if product.photo%}
+                                    <a href="{% url 'website:product_detail' product.id %}"><img src="/media/{{product.photo}}" alt="{{product}}" width="150"></a>
+                                {%else%}
+                                    <a href="{% url 'website:product_detail' product.id %}"><img src="/media/images/no-image.jpg" alt="{{product}}" width="150"></a>
+                                {%endif%}
+                            </div>
+                        </div> -->
                                 <div class="row">
-                                    <!-- <div class="col-md-12 card-image">
-                                        {%if product.image_path%}
-                                            <a href="{% url 'website:product_detail' product.id %}"><img src="/media/{{product.image_path}}" alt="{{product}}" width="150"></a>
-                                        {%else%}
-                                            <a href="{% url 'website:product_detail' product.id %}"><img src="/media/images/no-image.jpg" alt="{{product}}" width="150"></a>
-                                        {%endif%}
-                                    </div> -->
                                 </div>
                                 <div class="row content-holder">
                                     <div class="col-md-12">
@@ -127,13 +124,8 @@
                     </div>
                 </div>
             {% endfor %}
-
-        </div>
-    {% endblock %}
-
-
         </ol>
-    {% endblock content%}
+    <!-- {% endblock content%} -->
 </div>
 </div>
 </body>
