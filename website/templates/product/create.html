@@ -1,10 +1,14 @@
 {% extends 'index.html' %}
+{% load bootstrap3 %}
 
 {% block content %}
 
 {% load staticfiles %}
+<div class="container">
+<div class="page-header">
     <h3>Add a product to sell:</h3><br>
-
+</div>
+</div>
 
     <form action="{% url 'website:sell' %}" method="post" enctype="multipart/form-data">
       {% csrf_token %}
