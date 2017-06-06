@@ -1,6 +1,8 @@
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator
+from django.db.models.signals import post_save
 from django.db import models
+from django.dispatch import receiver
 from sorl.thumbnail import ImageField
 
 
@@ -10,6 +12,20 @@ options = (
         (1, 'True'),
 )
 # Create your models here.
+
+class UserProfile(models.Model):
+    """
+    purpose: pulls in default user model and creates a UserProfile class
+    author: Helana Nosrat
+    args:models.Model
+    returns: N/A
+    """
+    user = models.ForeignKey(User)
+    address = models.CharField(max_length=100, blank=True)
+    phone = models.CharField(max_length=12, blank=True)
+
+
+
 class Category(models.Model):
     """
     purpose: creates the category table in the database
@@ -113,6 +129,7 @@ class LineItem(models.Model):
         Order,
         on_delete = models.CASCADE,
     )
+
     product = models.ForeignKey(
         Product,
         on_delete = models.CASCADE,

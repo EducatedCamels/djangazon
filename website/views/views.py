@@ -1,59 +1,58 @@
-
 from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, HttpResponseRedirect, Http404
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.template import RequestContext
 from django.core.files.storage import FileSystemStorage
 
-from website.forms import UserForm, ProductForm, PaymentTypeForm
-from website.models import Product, Category, PaymentType
+from website.forms import UserForm, UserProfileForm, ProductForm, PaymentTypeForm
+from website.models import Product, Category, PaymentType, UserProfile, Order
+
 
 def index(request):
     template_name = 'index.html'
     all_products = Product.objects.all().order_by('-id')[:20]
     return render(request, template_name, {'products': all_products})
 
+
 def success(request):
     template_name = 'product/success.html'
     return render(request, template_name, {})
 
 
-# Create your views here.
 def register(request):
-    '''Handles the creation of a new user for authentication
+    """
+    purpose: allow a user to register an account
+    author: Helana Nosrat, Kayla Brewer
+    args: pulls information from two forms(user_form and profile_form) and sends that information to the database 
+        as a POST to the user and userprofile models
+    """
 
-    Method arguments:
-      request -- The full HTTP request object
-    '''
-
-    # A boolean value for telling the template whether the registration was successful.
-    # Set to False initially. Code changes value to True when registration succeeds.
     registered = False
 
-    # Create a new user by invoking the `create_user` helper method
-    # on Django's built-in User model
     if request.method == 'POST':
         user_form = UserForm(data=request.POST)
+        profile_form = UserProfileForm(data=request.POST)
 
-        if user_form.is_valid():
-            # Save the user's form data to the database.
+        if user_form.is_valid() and profile_form.is_valid():
             user = user_form.save()
-
-            # Now we hash the password with the set_password method.
-            # Once hashed, we can update the user object.
             user.set_password(user.password)
             user.save()
 
-            # Update our variable to tell the template registration was successful.
+            user_profile = profile_form.save(commit=False)
+            user_profile.user = user
+
+            user_profile.save()
             registered = True
 
         return login_user(request)
 
     elif request.method == 'GET':
         user_form = UserForm()
+        profile_form = UserProfileForm()
         template_name = 'register.html'
-        return render(request, template_name, {'user_form': user_form})
+        return render(request, template_name,
+                      {'user_form': user_form, 'profile_form': profile_form, 'registered': registered})
 
 
 def login_user(request):
@@ -70,8 +69,8 @@ def login_user(request):
     if request.method == 'POST':
 
         # Use the built-in authenticate method to verify
-        username=request.POST['username']
-        password=request.POST['password']
+        username = request.POST['username']
+        password = request.POST['password']
         authenticated_user = authenticate(username=username, password=password)
 
         # If authentication was successful, log the user in
@@ -84,8 +83,8 @@ def login_user(request):
             print("Invalid login details: {}, {}".format(username, password))
             return HttpResponse("Invalid login details supplied.")
 
-
     return render(request, 'login.html', {}, context)
+
 
 # Use the login_required() decorator to ensure only those logged in can access the view.
 @login_required
@@ -99,7 +98,6 @@ def user_logout(request):
 
 
 def sell_product(request):
-
     """
     purpose: allows user to list an item for sale by after submitting a form
     author: Dean Smith, Helana Nosrat, Bri Wyatt
@@ -151,13 +149,14 @@ def sell_product(request):
             template_name = 'product/product_detail.html'
             return render(request, template_name, {'product': product})
 
+
 def list_products(request):
     all_products = Product.objects.all()
     template_name = 'product/list.html'
     return render(request, template_name, {'products': all_products})
 
-def add_payment_type(request):
 
+def add_payment_type(request):
     """
     purpose: add a payment type to the data base
     author: Dean Smith, Helana Nosrat
@@ -177,4 +176,48 @@ def add_payment_type(request):
             account_number=form_data['account_number'],
         )
         p.save()
-        return HttpResponseRedirect('/user_payment_options')
+
+        return HttpResponseRedirect('/categories')
+
+
+@login_required
+def user_profile_view(request):
+    """
+    purpose: gets a user's account information, orders, and payments to display on page
+    author: Helana Nosrat & Kayla Brewer
+    returns: all data within the userprofile and user model 
+    """
+    previous_orders = Order.objects.all().filter(user=request.user)
+    payment_types = PaymentType.objects.all().filter(user=request.user)
+    current_user = request.user
+    user_profile = UserProfile.objects.get(user_id=current_user.id)
+
+    template_name = 'user_profile.html'
+    return render(request, template_name,
+                  {'previous_orders': previous_orders, 'payment_types': payment_types, 'user_profile': user_profile})
+
+
+def edit_user_profile(request):
+    """
+    purpose: allow a user to edit this profile information
+    author: Helana Nosrat & Kayla Brewer
+    returns: all data within the userprofile and user model 
+    """
+    if request.method == 'POST':
+        user_data = request.POST
+        current_user = request.user
+        current_user.first_name = user_data['first_name']
+        current_user.last_name = user_data['last_name']
+        current_user.save()
+        active_user = UserProfile.objects.get(user_id=current_user.id)
+        active_user.phone = user_data['phone']
+        active_user.address = user_data['address']
+        active_user.save()
+        return HttpResponseRedirect('/user_profile')
+
+    else:
+        current_user = request.user
+        active_user = UserProfile.objects.get(user_id=current_user.id)
+        context = {'active_user': active_user}
+        template_name = 'edit_user_profile.html'
+        return render(request, template_name, context)

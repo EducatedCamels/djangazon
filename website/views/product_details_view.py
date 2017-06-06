@@ -1,12 +1,7 @@
-from django.contrib.auth import logout, login, authenticate
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import get_object_or_404, render
-from django.http import HttpResponse, HttpResponseRedirect, Http404
-from django.template import RequestContext
-
-from website.forms import Product, UserForm, AddToCartForm, LineItem
+from django.shortcuts import render
+from django.http import HttpResponseRedirect
+from website.forms import Product, AddToCartForm, LineItem
 from website.models import Order
-
 
 
 def product_detail(request, product_id):
@@ -23,6 +18,7 @@ def product_detail(request, product_id):
     template_name = 'product/product_detail.html'
     return render(request, template_name, {'product': product})
 
+
 def get_order(request):
     """
     purpose: Gets user open order or creates a new order.
@@ -30,9 +26,10 @@ def get_order(request):
     args: request allows Django to see user session data
     """
     user = request.user
-    user_order = Order.objects.get_or_create(payment_type_id = None, user_id = user.id)
+    user_order = Order.objects.get_or_create(payment_type_id=None, user_id=user.id)
     return user_order
     print("order", user_order)
+
 
 def add_to_cart(request):
     """

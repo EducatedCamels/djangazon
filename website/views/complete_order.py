@@ -1,11 +1,5 @@
-from django.contrib.auth import logout, login, authenticate
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import get_object_or_404, render
-from django.http import HttpResponse, HttpResponseRedirect, Http404
-from django.template import RequestContext
-
-from website.views.views import success
-from website.forms import UserForm
+from django.shortcuts import render
+from django.http import HttpResponseRedirect
 from website.models import PaymentType, Order
 
 
@@ -27,8 +21,8 @@ def complete_order(request):
         form_data = request.POST
         user = request.user
         user_order = Order.objects.get_or_create(
-            payment_type_id = None,
-            user = request.user
+            payment_type_id=None,
+            user=request.user
         )
         payment = PaymentType.objects.get(id=form_data["payment_type"])
         user_order[0].payment_type = payment
