@@ -1,12 +1,19 @@
 {% extends "index.html" %}
-{% block content %}
+{% load bootstrap3 %}
+
 
 
 {% load thumbnail %}
 {% load staticfiles %}
+<div class="container">
+<div class="page-header">
+{% block header %}
+    <h2>Product Details</h2>
+{% endblock header %}
+</div>
 
-    <h3>Product Detail</h3>
-
+<div class="container-fluid">
+{% block content %}
     <ul>
     {% if product.photo %}
       <li>
@@ -18,40 +25,29 @@
       </li>
     {% endif %}
 
-      <li><h1>{{ product.title }}</h1></li>
-      <li><h2>{{ product.description }}</h2></li>
-      <p>${{ product.price }}</p>
+      <h1>{{ product.title }}</h1>
+      <p><strong>Description:</strong>  {{ product.description }}</p>
+      <p><strong>Price:</strong> ${{ product.price }}</p>
         {%if product.quantity == 0 %}
-            <p>SOLD OUT</p>
+            <p><strong>SOLD OUT</strong></p>
         {%else %}
-            <p>{{product.quantity}}</p>
+            <p><strong>Quantity:</strong> {{product.quantity}}</p>
         {%endif%}
      {% if product.city %}
-            <h4>Product Location: {{product.city}}</h4>
+            <p><strong>Product Location:</strong> {{product.city}}</p>
             <img src="{{ product.photo }}" alt="product photo">
         {% endif %}
       </ul>
 
 {% if request.user.is_authenticated %}
 
-<form action="{% url 'website:add_to_cart' %}" method="post">
+<form action="{% url 'website:add_to_cart' %}" method="post" class="form">
     {% csrf_token %}
     {{ add_to_cart_form.as_p }}
     <input type="hidden" value="{{ product.id }}" name="product_id"/>
-    <input type="submit" value="Add to Order"/>
+    <input type="submit" value="Add to Order" class="btn btn-success"/>
     {% csrf_token %}
   </form>
   {% endif %}
 {% endblock %}
-
-
-
-
-
-
-
-
-
-
-
-
+</div>

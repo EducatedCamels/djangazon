@@ -1,13 +1,24 @@
 {% extends "index.html" %}
-{% block content %}
-    <h1>Product Categories</h1>
+{% load bootstrap3 %}
 
+{% block header %}
+    <span class="glyphicon glyphicon-tags" aria-hidden="true"></span><h1>Product Categories</h1>
+{% endblock header %}
+
+{% block content %}
     {% for category in categories %}
-        <p><a href="{% url 'website:single_category' category.id %}">{{ category.name }} ({{ category.products.count }})</a></p>
-        <ol>
-        {% for product in category.get_top_three_products %}
-        <li id="{{product.id}}"><a href="{% url 'website:product_detail' product.id %}">{{ product.title }}</a></li>
-        {% endfor %}
-        </ol>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3>
+            <a href="{% url 'website:single_category' category.id %}">{{ category.name }} ({{ category.products.count }})</a>
+          </h3>
+          <ol>
+            {% for product in category.get_top_three_products %}
+            <li id="{{product.id}}"><a href="{% url 'website:product_detail' product.id %}">{{ product.title }}</a></li>
+
+            {% endfor %}
+         </ol>
+        </div>
+        </div>
     {% endfor %}
 {% endblock %}

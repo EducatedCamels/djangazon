@@ -1,6 +1,9 @@
 {% extends "index.html" %}
 {% block content %}
+<div class="container">
+    <div class="page-header">
     <h1>My Cart</h1>
+</div>
     {% for lineitem in products_on_order %}
     <ul>
         <li id="{{lineitem.product.id}}"><a href="{% url 'website:product_detail' lineitem.product.id %}">{{lineitem.product.title}} - ${{lineitem.product.price}}</a>
@@ -22,7 +25,9 @@
     {% else %}
     <p><strong>Order Total: ${{ total }} </strong></p>
     <form action="{% url 'website:completeorder' %}">
-      <input type="submit" value="Checkout" />
+      <input type="submit" value="Checkout" class="btn btn-danger"/>
     </form>
+
     {% endif %}
+    </div>
 {% endblock %}

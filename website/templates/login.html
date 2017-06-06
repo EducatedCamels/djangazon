@@ -1,21 +1,40 @@
+{% load bootstrap3 %}
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
-        <title>Bangazon</title>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>Djangazon</title>
+        {% bootstrap_css %}
+        {% bootstrap_javascript %}
     </head>
+<html>
 
     <body>
-        <h1>Login to Bangazon</h1>
-
-        <form id="login_form" method="post" action="{% url 'website:login' %}">
+        <div class="container">
+        <div class="page-header">
+        {% block header %}
+        <h2>Login to Bangazon</h2>
+        {% endblock header %}
+    </div>
+        {% block content %}
+        <div>
+        <form id="login_form" method="post" action="{% url 'website:login' %}" class="form">
             {% csrf_token %}
             Username: <input type="text" name="username" value="" size="50" />
             <br />
             Password: <input type="password" name="password" value="" size="50" />
             <br />
-
-            <input type="submit" value="submit" />
+{% buttons %}
+<br />
+            <input type="submit" value="Submit" class="btn btn-primary"/>
+            <input type="hidden" name="next" value="{% url 'website:index' %}" />
+            {% endbuttons %}
         </form>
-
+{% endblock content %}
+</div>
     </body>
 </html>
