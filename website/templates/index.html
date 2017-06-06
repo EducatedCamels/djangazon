@@ -45,60 +45,46 @@
         {% endif %}
     </div>
 </nav>
-<!-- <div class="container">
-    <h3 class="text-center">Welcome to Bangazon {{ user.first_name }}.</h3>
-    {% block content %}
-        <p>Current Top Products:</p>
-            {% for product in products %} -->
-                <!-- <li id="{{ product.id }}"><a
-                        href="{% url 'website:product_detail' product.id %}">{{ product.title }}</a></li> -->
-                <!-- <ul class="catCardList">
-                    <li class="catCardList">
-                        <div class="catCard"><a href="#"><img src="http://placehold.it/221x200" alt=""></a>
-                           
-                               <li id="{{ product.id }}"><a
-                        href="{% url 'website:product_detail' product.id %}">{{ product.title }}</a></li> -->
-                                <!-- <div class="startingPrice">Prices Starting At <span>$174.99</span></div> -->
-                                <!-- <div id="catCardButton" class="button"><a href="#">View Product</a></div> -->
-     <!--                        </div>
-                        </div>
-                    </li>
-                </ul>
-            {% endfor %}
-    {% endblock %}
-</div> -->
-<div class="row">
+
+{% block content %}       
+<h3 class="text-center">Welcome to Bangazon {{ user.first_name }}.</h3>
+    <div class="row">
             {% for product in products %}
                 <div class="col-md-3">
-                    <div class="card-container text-center">
-                        <div class="row">
-                            <div class="col-md-12 card-image">
-                                {%if product.image_path%}
-                                    <a href="{% url 'website:product_detail' product.id %}"><img src="/media/{{product.image_path}}" alt="{{product}}" width="150"></a>
-                                {%else%}
-                                    <a href="{% url 'website:product_detail' product.id %}"><img src="/media/images/no-image.jpg" alt="{{product}}" width="150"></a>
-                                {%endif%}
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <div class="card-container text-center">
+                                <div class="row">
+                                    <div class="col-md-12 card-image">
+                                        {%if product.image_path%}
+                                            <a href="{% url 'website:product_detail' product.id %}"><img src="/media/{{product.image_path}}" alt="{{product}}" width="150"></a>
+                                        {%else%}
+                                            <a href="{% url 'website:product_detail' product.id %}"><img src="/media/images/no-image.jpg" alt="{{product}}" width="150"></a>
+                                        {%endif%}
+                                    </div>
+                                </div>
+                                <div class="row content-holder">
+                                    <div class="col-md-12">
+                                        <h2><a href="{% url 'website:product_detail' product.id %}">{{product.title}}</a></h2>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <h4>${{product.price}}</h4>
+                                    </div>
+                                    <div class="col-md-12 product-description">
+                                        <h5>{{product.description}}</h5>
+                                    </div>
+                                    <div class="col-md-12 button-on-card">
+                                        <a class="btn btn-primary" href="{% url 'website:product_detail' product.id %}">View product</a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="row content-holder">
-                            <div class="col-md-12">
-                                <h2><a href="{% url 'website:product_detail' product.id %}">{{product.title}}</a></h2>
-                            </div>
-                            <div class="col-md-12">
-                                <h4>${{product.price}}</h4>
-                            </div>
-                            <div class="col-md-12 product-description">
-                                <h5>{{product.description}}</h5>
-                            </div>
-                            <div class="col-md-12 button-on-card">
-                                <a class="btn btn-primary" href="{% url 'website:product_detail' product.id %}">View product</a>
-                            </div>
-                        </div>
-
                     </div>
                 </div>
             {% endfor %}
         </div>
+    {% endblock %}
+
 
 </body>
 </html>
