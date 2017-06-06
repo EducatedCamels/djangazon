@@ -13,7 +13,7 @@
 </head>
 <body>
 
-<nav class="navbar navbar-default navbar-fixed-top">
+<nav class="navbar navbar-default navbar-static-top">
     <div class="container-fluid">
         {% if user.is_authenticated %}
             <ul class="nav navbar-nav">
@@ -33,6 +33,7 @@
                     <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
                 </button>
             </form>
+            <h3 class="text-center">Welcome to Bangazon {{ user.first_name }}.</h3>
         {% else %}
             <ul class="nav navbar-nav navbar-fixed-top">
                 <li role="presentation"><a href="{% url 'website:index' %}">Home</a></li>
@@ -47,7 +48,7 @@
 </nav>
 
 {% block content %}       
-<h3 class="text-center">Welcome to Bangazon {{ user.first_name }}.</h3>
+
     <div class="row">
             {% for product in products %}
                 <div class="col-md-3">
@@ -55,13 +56,13 @@
                         <div class="panel-heading">
                             <div class="card-container text-center">
                                 <div class="row">
-                                    <div class="col-md-12 card-image">
+                                    <!-- <div class="col-md-12 card-image">
                                         {%if product.image_path%}
                                             <a href="{% url 'website:product_detail' product.id %}"><img src="/media/{{product.image_path}}" alt="{{product}}" width="150"></a>
                                         {%else%}
                                             <a href="{% url 'website:product_detail' product.id %}"><img src="/media/images/no-image.jpg" alt="{{product}}" width="150"></a>
                                         {%endif%}
-                                    </div>
+                                    </div> -->
                                 </div>
                                 <div class="row content-holder">
                                     <div class="col-md-12">
