@@ -1,36 +1,50 @@
+{% load bootstrap3 %}
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
-        <title>Bangazon</title>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>Djangazon</title>
+        {% bootstrap_css %}
+        {% bootstrap_javascript %}
     </head>
 
     <body>
-{% block title %}
-        <h1>Register with Bangazon</h1>
-{% endblock %}
-{% block body_block %}
-
+        <div class="container">
+            <div class="page-header">
+        {% block header %}
+        <h2>Register with Djangazon</h2>
+        {% endblock header %}
+    </div>
+<div>
+    {% block content %}
         {% if registered %}
         <strong>Thank you for registering!</strong>
         <a href="{% url 'website:index' %}">Return to the homepage.</a><br />
         {% else %}
-        <strong>Register here!</strong><br />
+        <h4><strong>Register here!</strong></h4><br />
 
         <form id="user_form" method="post" action="{% url 'website:register' %}"
-                enctype="multipart/form-data">
+                enctype="multipart/form-data" class="form">
 
             {% csrf_token %}
 
             <!-- Display each form. The as_p method wraps each element in a paragraph
                  (<p>) element. This ensures each element appears on a new line,
                  making everything look neater. -->
+
             {{ user_form.as_p }}
             {{ profile_form.as_p }}
 
             <!-- Provide a button to click to submit the form. -->
-            <input type="submit" name="submit" value="Register" />
+
+            <input class="btn btn-primary" type="submit" name="submit" value="Register" />
         </form>
         {% endif %}
-{% endblock %}
+
+        {% endblock content %}
     </body>
 </html>
