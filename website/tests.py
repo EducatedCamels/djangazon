@@ -1,10 +1,9 @@
-from django.test import Client, TestCase
+from django.test import TestCase
 from django.urls import reverse
 from website.models import *
 
 
 class ViewsTestCases(TestCase):
-    @classmethod
     def setUp(self):
         """
         purpose: create a user, product category, and product for testing
@@ -39,16 +38,14 @@ class ViewsTestCases(TestCase):
             account_number=987654321
         )
 
-        self.payment_type_two = PaymentType.objects.create(
+        self.payment_type = PaymentType.objects.create(
             user=self.user,
             name="Mastercard",
             account_number=87567889
         )
 
-        client = Client()
-
-        client.login(
-            username="sillywabbit",
+        self.client.login(
+            username="sillywabbitz",
             password="1234asdf"
         )
 
@@ -87,9 +84,9 @@ class ViewsTestCases(TestCase):
         args:
         returns: pass/fail based upon successful/unseccessful assertion
         """
-        response = self.client.get(reverse('website:paymentlist', args={self.user.pk}))
-        self.assertContains(response, self.payment_type.name)
-        self.assertContains(response, self.payment_type.account_number)
+        response = self.client.get(reverse('website:user_payment_options'))
+        self.assertQuerysetEqual(list(response.context["all_payment_types"]),
+                                 list(["<PaymentType: PaymentType object>", "<PaymentType: PaymentType object>"]))
 
     def test_category_view_returns_correct_products(self):
         """
