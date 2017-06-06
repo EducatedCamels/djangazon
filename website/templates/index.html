@@ -1,10 +1,22 @@
 {% load staticfiles %}
-{% load bootstrap3 %}
+<!-- {% load bootstrap3 %} -->
 
 <!DOCTYPE html>
 <html lang="eng">
 <head>
     <meta charset="utf-8">
+
+    <title>Bangazon</title>
+ <!--    <link rel="stylesheet" href="/../styles/test.css"> -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'main.css' %}" />
+</head>
+<body>
+
+<nav class="navbar navbar-default navbar-static-top">
+
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Djangazon</title>
@@ -17,15 +29,13 @@
     <script
   src="https://code.jquery.com/jquery-3.2.1.min.js"
   integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-  crossorigin="anonymous"></script> -->
+  crossorigin="anonymous"></script>
 </head>
-<body>
+
     <!-- Static Navbar -->
-<nav class="navbar navbar-default navbar static-top">
+
     <div class="container-fluid">
         <div class="navbar-header">
-            <button type="button" class="navbar toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar"><span class="glyphicon glyphicon-option-horizontal" aria-hidden="true"></span>
-            </button>
             <a class="navbar-brand" href="{% url 'website:index' %}">Djangazon</a></div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
@@ -48,7 +58,7 @@
                 </button>
             </form>
         {% else %}
-            <ul class="nav navbar-nav">
+            <ul class="nav navbar-nav navbar-fixed-top">
                 <li role="presentation"><a href="{% url 'website:index' %}">Home</a></li>
                 <li role="presentation"><a href="{% url 'website:list_products' %}">Product Categories</a></li>
                 <li role="presentation"><a href="{% url 'website:login' %}">Login</a></li>
@@ -61,6 +71,11 @@
 </div>
 </nav>
 
+
+{% block content %}
+
+    <div class="row">
+
 <div class="container">
     <h3 class="page-header">{% block header %}Welcome to Djangazon {{ user.first_name }}.</h3>
     <div class='jumbotron'>
@@ -70,13 +85,44 @@
     </div>
     {% endblock header %}
 
-<div>
-    {% block content %}
+    <div>
         <h2>Current Top Products:</h2>
-        <ol>
+            <ol>
+
             {% for product in products %}
-                <li id="{{ product.id }}"><a
-                        href="{% url 'website:product_detail' product.id %}">{{ product.title }}</a></li>
+                <div class="col-md-3">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <div class="card-container text-center">
+                           <!--  <div class="row">
+                            <div class="col-md-12 card-image">
+                                {%if product.photo%}
+                                    <a href="{% url 'website:product_detail' product.id %}"><img src="/media/{{product.photo}}" alt="{{product}}" width="150"></a>
+                                {%else%}
+                                    <a href="{% url 'website:product_detail' product.id %}"><img src="/media/images/no-image.jpg" alt="{{product}}" width="150"></a>
+                                {%endif%}
+                            </div>
+                        </div> -->
+                                <div class="row">
+                                </div>
+                                <div class="row content-holder">
+                                    <div class="col-md-12">
+                                        <h2><a href="{% url 'website:product_detail' product.id %}">{{product.title}}</a></h2>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <h4>${{product.price}}</h4>
+                                    </div>
+                                    <div class="col-md-12 product-description">
+                                        <h5>{{product.description}}</h5>
+                                    </div>
+                                    <div class="col-md-12 button-on-card">
+                                        <a class="btn btn-primary" href="{% url 'website:product_detail' product.id %}">View product</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             {% endfor %}
         </ol>
     {% endblock content%}

@@ -39,8 +39,8 @@
                     Oh No! You don't have any payment methods added yet!
                     <br><br>
                 {% endfor %}
-                <form action="{% url 'website:add_payment_type' %}">
-                    <button class="btn btn-info" type="submit">Go Add One!</button>
+                <form action="{% url 'website:user_payment_options' %}">
+                    <button class="btn btn-info" type="submit">View Payment Options</button>
                 </form>
             </div>
         </div>
