@@ -1,12 +1,5 @@
-from django.contrib.auth import logout, login, authenticate
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import get_object_or_404, render
-from django.http import HttpResponse, HttpResponseRedirect, Http404
-from django.template import RequestContext
-from website.forms import ProductForm
-from website.forms import UserForm
-from website.models import Product, Category
-
+from django.shortcuts import render
+from website.models import Category
 
 
 def category_list(request):
