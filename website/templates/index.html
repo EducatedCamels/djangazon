@@ -13,7 +13,7 @@
 </head>
 <body>
 
-<nav class="navbar navbar-default">
+<nav class="navbar navbar-default navbar-fixed-top">
     <div class="container-fluid">
         {% if user.is_authenticated %}
             <ul class="nav navbar-nav">
@@ -34,7 +34,7 @@
                 </button>
             </form>
         {% else %}
-            <ul class="nav navbar-nav">
+            <ul class="nav navbar-nav navbar-fixed-top">
                 <li role="presentation"><a href="{% url 'website:index' %}">Home</a></li>
                 <li role="presentation"><a href="{% url 'website:list_products' %}">Product Categories</a></li>
                 <li role="presentation"><a href="{% url 'website:login' %}">Login</a></li>
@@ -45,172 +45,63 @@
         {% endif %}
     </div>
 </nav>
-<div class="container">
+<!-- <div class="container">
     <h3 class="text-center">Welcome to Bangazon {{ user.first_name }}.</h3>
     {% block content %}
         <p>Current Top Products:</p>
-        <ol>
-            {% for product in products %}
+            {% for product in products %} -->
                 <!-- <li id="{{ product.id }}"><a
                         href="{% url 'website:product_detail' product.id %}">{{ product.title }}</a></li> -->
-                <ul class="catCardList">
+                <!-- <ul class="catCardList">
                     <li class="catCardList">
                         <div class="catCard"><a href="#"><img src="http://placehold.it/221x200" alt=""></a>
-                            <div class="lowerCatCard">
+                           
                                <li id="{{ product.id }}"><a
-                        href="{% url 'website:product_detail' product.id %}">{{ product.title }}</a></li>
-                                <div class="startingPrice">Prices Starting At <span>$174.99</span></div>
-                                <p>Bacon ipsum dolor sit amet hamburger doner kielbasa beef ribs, frankfurter prosciutto tri-tip pig turducken tenderloin filet mignon. Frankfurter chuck fatback venison pastrami sirloin. Rump tongue boudin meatloaf venison ham prosciutto.</p>
-                                <h4>Best Used For:</h4>
-                                <ul>
-                                    <li>Eating Bacon</li>
-                                    <li>Cooking Bacon</li>
-                                </ul>
-                                <div id="catCardButton" class="button"><a href="#">View Product</a></div>
-                            </div>
+                        href="{% url 'website:product_detail' product.id %}">{{ product.title }}</a></li> -->
+                                <!-- <div class="startingPrice">Prices Starting At <span>$174.99</span></div> -->
+                                <!-- <div id="catCardButton" class="button"><a href="#">View Product</a></div> -->
+     <!--                        </div>
                         </div>
                     </li>
                 </ul>
             {% endfor %}
-        </ol>
     {% endblock %}
-</div>
+</div> -->
+<div class="row">
+            {% for product in products %}
+                <div class="col-md-3">
+                    <div class="card-container text-center">
+                        <div class="row">
+                            <div class="col-md-12 card-image">
+                                {%if product.image_path%}
+                                    <a href="{% url 'website:product_detail' product.id %}"><img src="/media/{{product.image_path}}" alt="{{product}}" width="150"></a>
+                                {%else%}
+                                    <a href="{% url 'website:product_detail' product.id %}"><img src="/media/images/no-image.jpg" alt="{{product}}" width="150"></a>
+                                {%endif%}
+                            </div>
+                        </div>
+                        <div class="row content-holder">
+                            <div class="col-md-12">
+                                <h2><a href="{% url 'website:product_detail' product.id %}">{{product.title}}</a></h2>
+                            </div>
+                            <div class="col-md-12">
+                                <h4>${{product.price}}</h4>
+                            </div>
+                            <div class="col-md-12 product-description">
+                                <h5>{{product.description}}</h5>
+                            </div>
+                            <div class="col-md-12 button-on-card">
+                                <a class="btn btn-primary" href="{% url 'website:product_detail' product.id %}">View product</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
 
 </body>
 </html>
 
-<div class="products">
-        <div class="product-card">
-            <div class="cell-1">
-                <div class="product-image">
-                    <div class="image-container">
-                        <img src="http://placehold.it/350x350">
-                    </div>
-                </div>
-                <div class="cell-2">
-                    <div class="product-info">
-                        <h4>This title will vary in size between one line and three lines tall</h4>
-                        <p>This info is pretty much the same.</p>
-                    </div>
-                    <div class="product-info-extra">
-                        <button>Button</button>
-                    </div>
-                </div>
-            </div>
-            <div class="product-footer">
-                <label>
-                    <input type="checkbox"> Compare</label>
-            </div>
-        </div>
-        <div class="product-card">
-            <div class="cell-1">
-                <div class="product-image">
-                    <div class="image-container">
-                        <img src="http://placehold.it/350x350">
-                    </div>
-                </div>
-                <div class="cell-2">
-                    <div class="product-info">
-                        <h4>Small one</h4>
-                        <p>This info is pretty much the same.</p>
-                    </div>
-                    <div class="product-info-extra">
-                        <button>Button</button>
-                    </div>
-                </div>
-            </div>
-            <div class="product-footer">
-                <label>
-                    <input type="checkbox"> Compare</label>
-            </div>
-        </div>
-        <div class="product-card">
-            <div class="cell-1">
-                <div class="product-image">
-                    <div class="image-container">
-                        <img src="http://placehold.it/350x350">
-                    </div>
-                </div>
-                <div class="cell-2">
-                    <div class="product-info">
-                        <h4>This title will vary in size between one line and three lines tall</h4>
-                        <p>This info is pretty much the same.</p>
-                    </div>
-                    <div class="product-info-extra">
-                        <button>Button</button>
-                    </div>
-                </div>
-            </div>
-            <div class="product-footer">
-                <label>
-                    <input type="checkbox"> Compare</label>
-            </div>
-        </div>
-        <div class="product-card">
-            <div class="cell-1">
-                <div class="product-image">
-                    <div class="image-container">
-                        <img src="http://placehold.it/350x350">
-                    </div>
-                </div>
-                <div class="cell-2">
-                    <div class="product-info">
-                        <h4>Small one</h4>
-                        <p>This info is pretty much the same.</p>
-                    </div>
-                    <div class="product-info-extra">
-                        <button>Button</button>
-                    </div>
-                </div>
-            </div>
-            <div class="product-footer">
-                <label>
-                    <input type="checkbox"> Compare</label>
-            </div>
-        </div>
-        <div class="product-card">
-            <div class="cell-1">
-                <div class="product-image">
-                    <div class="image-container">
-                        <img src="http://placehold.it/350x350">
-                    </div>
-                </div>
-                <div class="cell-2">
-                    <div class="product-info">
-                        <h4>This title</h4>
-                        <p>This info is pretty much the same.</p>
-                    </div>
-                    <div class="product-info-extra">
-                        <button>Button</button>
-                    </div>
-                </div>
-            </div>
-            <div class="product-footer">
-                <label>
-                    <input type="checkbox"> Compare</label>
-            </div>
-        </div>
-        <div class="product-card">
-            <div class="cell-1">
-                <div class="product-image">
-                    <div class="image-container">
-                        <img src="http://placehold.it/350x350">
-                    </div>
-                </div>
-                <div class="cell-2">
-                    <div class="product-info">
-                        <h4>Small one</h4>
-                        <p>This info is pretty much the same.</p>
-                    </div>
-                    <div class="product-info-extra">
-                        <button>Button</button>
-                    </div>
-                </div>
-            </div>
-            <div class="product-footer">
-                <label>
-                    <input type="checkbox"> Compare</label>
-            </div>
-        </div>
-    </div>
+
 
