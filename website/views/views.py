@@ -39,10 +39,10 @@ def register(request):
             user.set_password(user.password)
             user.save()
 
-            profile = profile_form.save()
-            profile.user = user
+            user_profile = profile_form.save(commit=False)
+            user_profile.user = user
 
-            profile.save()
+            user_profile.save()
             registered = True
 
         return login_user(request)

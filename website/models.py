@@ -20,22 +20,11 @@ class UserProfile(models.Model):
     args:models.Model
     returns: N/A
     """
-    # user = models.OneToOneField(User, on_delete=models.CASCADE)
     user = models.ForeignKey(User)
     address = models.CharField(max_length=100, blank=True)
     phone = models.CharField(max_length=12, blank=True)
-    # s = models.SlugField()
 
 
-
-    # @receiver(post_save, sender=User)
-    # def create_user_profile(sender, instance, created, **kwargs):
-    #     if created:
-    #         UserProfile.objects.create(user=instance)
-    #
-    # @receiver(post_save, sender=User)
-    # def save_user_profile(sender, instance, **kwargs):
-    #     instance.userprofile.save()
 
 class Category(models.Model):
     """
